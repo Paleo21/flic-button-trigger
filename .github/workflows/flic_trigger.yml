@@ -1,0 +1,21 @@
+name: Flic Button Trigger
+
+on:
+  workflow_dispatch:   # allows manual triggering from the Flic app
+  repository_dispatch: # optional for more advanced triggers
+
+jobs:
+  update_state:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Update button_state.json
+        run: |
+          echo '{"pressed": true}' > button_state.json
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add button_state.json
+          git commit -m "Flic button pressed"
+          git push
